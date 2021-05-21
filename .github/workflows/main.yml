@@ -22,4 +22,4 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
         name: Build MultiArch
-        run: docker buildx build --platform=linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 -t suibing/aria2-alpine --push .
+        run: docker buildx build --platform=linux/amd64,linux/arm64,linux/386,linux/arm/v7,linux/arm/v6 -t suibing/aria2-alpine --push .
