@@ -21,3 +21,5 @@ FROM alpine
 COPY --from=upxAman /aman .
 COPY --from=upxAria2c /aria2c /usr/bin/aria2c
 ENTRYPOINT [ "./aman" ]
+
+EXPOSE 6800
