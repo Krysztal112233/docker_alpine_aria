@@ -8,8 +8,7 @@ RUN go build -v -ldflags "-s -w" ./...
 FROM gruebel/upx:latest as upxAman
 COPY --from=amanBuild /go/src/app/aman .
 RUN upx -9 aman
-WORKDIR /usr/bin/
-RUN upx -9 aria2c
+RUN upx -9 /usr/bin/aria2c -o /usr/bin/aria2c
 
 FROM alpine
 RUN apk update && apk add aria2
