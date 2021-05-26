@@ -44,7 +44,7 @@ enable-rpc=true
 rpc-allow-origin-all=true
 rpc-listen-all=true
 #event-poll=select
-#rpc-listen-port=6800
+rpc-listen-port=6800
 #rpc-secret=<TOKEN>
 #rpc-user=<USER>
 #rpc-passwd=<PASSWD>
@@ -55,7 +55,7 @@ rpc-listen-all=true
 listen-port=51413
 #bt-max-peers=55
 enable-dht=false
-#enable-dht6=false9
+#enable-dht6=false
 #dht-listen-port=6881-6999
 #bt-enable-lpd=false
 enable-peer-exchange=false
@@ -131,7 +131,7 @@ func main() {
 	signal.Notify(c)
 
 	http.HandleFunc("/", httpService)
-	http.ListenAndServe(":8089", nil)
+	http.ListenAndServe(":8090", nil)
 
 	for {
 		select {

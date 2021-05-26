@@ -2,7 +2,7 @@ FROM golang:1.16.4-alpine AS amanBuild
 WORKDIR /go/src/app
 COPY ./aman .
 RUN go env -w GO111MODULE=on
-# RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go get -d -v ./...
 RUN go build -v -ldflags "-s -w" ./...
 
@@ -19,7 +19,8 @@ RUN upx -9 aria2c
 
 FROM alpine
 COPY --from=upxAman /aman .
+RUN apk add --update --no-cache aria2 && rm -rf /var/cache/apk/*
 COPY --from=upxAria2c /aria2c /usr/bin/aria2c
 ENTRYPOINT [ "./aman" ]
 
-EXPOSE 6800
+EXPOSE 8090 6800 6800/udp
