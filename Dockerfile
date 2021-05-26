@@ -6,14 +6,16 @@ RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go get -d -v ./...
 RUN go build -v -ldflags "-s -w" ./...
 
-FROM gruebel/upx:latest as upxAman
+FROM alpine:latest as upxAman
+RUN apk add --update upx
 COPY --from=amanBuild /go/src/app/aman .
 RUN upx -9 aman
 
 FROM alpine AS aria2cInstall 
 RUN apk update && apk add aria2
 
-FROM gruebel/upx:latest as upxAria2c
+FROM alpine:latest as upxAria2c
+RUN apk add --update upx
 COPY --from=aria2cInstall /usr/bin/aria2c .
 RUN upx -9 aria2c
 
