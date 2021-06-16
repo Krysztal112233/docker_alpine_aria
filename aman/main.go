@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
@@ -11,7 +12,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/kpango/glg"
 	"github.com/mitchellh/go-ps"
 )
 
@@ -20,7 +20,8 @@ var configPath = os.Getenv("ARIA2_CONFIG_PATH")
 
 var statu chan bool = make(chan bool)
 var errorsChan chan error = make(chan error)
-var dockerSingal chan int = make(chan int)
+
+// var dockerSingal chan int = make(chan int)
 
 var defaultConfig = `save-session=/tmp/Downloads/aria2.session
 #save-session-interval=60
@@ -110,7 +111,7 @@ func main() {
 		configPath = "./aria2.conf"
 		fp, err := os.Create(configPath)
 		if err != nil {
-			glg.Error(err)
+			fmt.Println(err)
 			os.Exit(-1)
 		}
 		fp.Write(b)
@@ -119,9 +120,9 @@ func main() {
 	s, _ := exec.LookPath("aria2c")
 	aria2Cmd := s + " " + "--conf-path=" + configPath + " " + "-D"
 	cmd := exec.Command(s, "--conf-path="+configPath, "-D")
-	glg.Info(aria2Cmd)
+	fmt.Println(aria2Cmd)
 	for k, v := range confMap {
-		glg.Logf("%-30s:%s", k, v)
+		fmt.Printf("%-30s:%s\n", k, v)
 	}
 	cmd.Start()
 	time.Sleep(time.Second * 1)
@@ -136,21 +137,21 @@ func main() {
 	for {
 		select {
 		case <-statu:
-			glg.Info("Aria2c had exited!")
+			fmt.Println("Aria2c had exited!")
 			return
 		case erro := <-errorsChan:
-			glg.Error(erro)
+			fmt.Println(erro)
 			return
 		case sig := <-c:
 			switch sig {
 			case os.Kill:
-				glg.Error("container has been killed!")
+				fmt.Println("container has been killed!")
 				os.Exit(0)
 			case syscall.SIGTERM:
-				glg.Info("container was been stoped by docker!")
+				fmt.Println("container was been stoped by docker!")
 				os.Exit(0)
 			case os.Interrupt:
-				glg.Info("container has been interrupted!")
+				fmt.Println("container has been interrupted!")
 				os.Exit(0)
 			}
 		}
@@ -163,7 +164,7 @@ func checkStatus() {
 	for {
 		l, err := ps.Processes()
 		if err != nil {
-			glg.Error(err)
+			fmt.Println(err)
 			statu <- false
 			errorsChan <- err
 			break
