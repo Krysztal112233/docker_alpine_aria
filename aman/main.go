@@ -23,10 +23,10 @@ var errorsChan chan error = make(chan error)
 
 // var dockerSingal chan int = make(chan int)
 
-var defaultConfig = `save-session=/tmp/Downloads/aria2.session
+var defaultConfig = `save-session=/aria2.session
 #save-session-interval=60
 dir=/tmp/Downloads
-#disk-cache=32M
+disk-cache=32M
 #file-allocation=none
 continue=true
 #max-concurrent-downloads=5
@@ -52,7 +52,7 @@ rpc-listen-port=6800
 #rpc-secure=true
 #rpc-certificate=/path/to/certificate.pem
 #rpc-private-key=/path/to/certificate.key
-#follow-torrent=true
+follow-torrent=true
 listen-port=51413
 #bt-max-peers=55
 enable-dht=false

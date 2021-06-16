@@ -22,7 +22,7 @@ RUN upx -9 aria2c
 FROM alpine
 COPY --from=upxAman /aman .
 RUN apk add --update --no-cache aria2 && rm -rf /var/cache/apk/*
-RUN mkdir /tmp/Downloads/ && touch /tmp/Downloads/aria2.session
+RUN touch aria2.session
 COPY --from=upxAria2c /aria2c /usr/bin/aria2c
 ENTRYPOINT [ "./aman" ]
 
