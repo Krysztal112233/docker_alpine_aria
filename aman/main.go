@@ -22,7 +22,7 @@ var statu chan bool = make(chan bool)
 var errorsChan chan error = make(chan error)
 var dockerSingal chan int = make(chan int)
 
-var defaultConfig = `#save-session=aria2.session
+var defaultConfig = `save-session=/tmp/Downloads/aria2.session
 #save-session-interval=60
 dir=/tmp/Downloads
 #disk-cache=32M
